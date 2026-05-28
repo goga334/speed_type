@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speed Type</title>
+    <link rel="stylesheet" href="./src/styles.css" />
+  </head>
+  <body>
+    <div class="videoBackdrop" aria-hidden="true">
+      <video data-reward-video muted loop playsinline preload="metadata">
+        <source
+          src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Flor_de_Suculenta.webm"
+          type="video/webm"
+        />
+      </video>
+    </div>
+    <main class="shell">
+      <section class="game" aria-labelledby="game-title">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Typing trainer</p>
+            <h1 id="game-title">Speed Type</h1>
+          </div>
+          <div class="topActions">
+            <label class="iconButton" aria-label="Upload video links">
+              <input data-video-file type="file" accept=".txt,.csv,text/plain" />
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 15V4" />
+                <path d="m8 8 4-4 4 4" />
+                <path d="M5 16v3h14v-3" />
+              </svg>
+            </label>
+            <button class="iconButton" id="reset-button" type="button" aria-label="Reset session">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 12a8 8 0 1 0 2.7-6" />
+                <path d="M4 4v6h6" />
+              </svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="stats" aria-label="Session statistics">
+          <div class="stat">
+            <span>WPM</span>
+            <strong data-stat="wordsPerMinute">0</strong>
+          </div>
+          <div class="stat">
+            <span>Accuracy</span>
+            <strong data-stat="accuracy">100%</strong>
+          </div>
+          <div class="stat">
+            <span>Mistakes</span>
+            <strong data-stat="mistakes">0</strong>
+          </div>
+          <div class="stat">
+            <span>Time</span>
+            <strong data-stat="time">0s</strong>
+          </div>
+        </div>
+
+        <div class="progressTrack" aria-label="Progress">
+          <span data-progress></span>
+        </div>
+
+        <div class="paceMeter" aria-label="Pace meter">
+          <span data-pace></span>
+        </div>
+
+        <p class="prompt" data-prompt aria-label="Text to type"></p>
+
+        <textarea
+          class="typingInput"
+          data-input
+          placeholder="Start typing..."
+          spellcheck="false"
+          autocapitalize="off"
+          autocomplete="off"
+          autocorrect="off"
+          aria-label="Typing input"
+        ></textarea>
+
+        <footer class="statusLine">
+          <span class="quietBadge" data-status>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="m12 3 1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z" />
+              <path d="m19 15 .9 2.6 2.6.9-2.6.9L19 21l-.9-2.6-2.6-.9 2.6-.9L19 15Z" />
+            </svg>
+            Ready
+          </span>
+          <button class="textButton" id="focus-button" type="button">Focus</button>
+        </footer>
+      </section>
+      <p class="credit">Background video: Koffermejia, CC BY-SA 4.0</p>
+    </main>
+    <script src="./src/core/createGameApp.js"></script>
+    <script src="./src/games/typing/passages.js"></script>
+    <script src="./src/games/typing/typingGame.js"></script>
+    <script src="./src/games/typing/typingView.js"></script>
+    <script src="./src/main.js"></script>
+  </body>
+</html>

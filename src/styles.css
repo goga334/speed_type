@@ -1,0 +1,329 @@
+:root {
+  color: #ffffff;
+  background: #101210;
+  font-family:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.videoBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #101210;
+}
+
+.videoBackdrop video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: filter 180ms linear;
+}
+
+.videoBackdrop::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    radial-gradient(circle at center, transparent 46%, rgba(0, 0, 0, 0.22)),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.24), transparent 28%, rgba(0, 0, 0, 0.2));
+  pointer-events: none;
+}
+
+.shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+  padding: 18px clamp(14px, 3vw, 34px) 24px;
+}
+
+.game {
+  display: flex;
+  width: 100%;
+  min-height: calc(100vh - 42px);
+  flex: 1;
+  flex-direction: column;
+}
+
+.topbar,
+.statusLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.topActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topbar,
+.stats,
+.statusLine {
+  color: #ffffff;
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.5);
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 4vw, 3.4rem);
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.iconButton,
+.textButton {
+  display: inline-flex;
+  min-width: 38px;
+  height: 38px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  color: #ffffff;
+  background: rgba(4, 7, 7, 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 10px 28px rgba(0, 0, 0, 0.16);
+  backdrop-filter: blur(10px);
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    opacity 160ms ease;
+}
+
+.iconButton svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.iconButton:hover,
+.textButton:hover {
+  border-color: rgba(255, 255, 255, 0.42);
+  background: rgba(4, 7, 7, 0.34);
+  transform: translateY(-1px);
+}
+
+.textButton {
+  width: auto;
+  padding: 0 16px;
+  font-weight: 700;
+}
+
+.iconButton input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.stats {
+  display: grid;
+  width: min(760px, 100%);
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(10px, 2vw, 24px);
+  margin: 18px auto 14px;
+}
+
+.stat {
+  min-width: 0;
+  padding: 4px 0 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.34);
+}
+
+.stat span {
+  display: block;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.stat strong {
+  display: block;
+  margin-top: 8px;
+  overflow-wrap: anywhere;
+  font-size: clamp(1.25rem, 3vw, 2.1rem);
+  line-height: 1;
+}
+
+.progressTrack,
+.paceMeter {
+  width: min(760px, 100%);
+  height: 8px;
+  overflow: hidden;
+  margin-inline: auto;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.paceMeter {
+  height: 12px;
+  margin-top: 10px;
+  background: rgba(255, 255, 255, 0.24);
+}
+
+.progressTrack span,
+.paceMeter span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  transition: width 180ms ease;
+}
+
+.progressTrack span {
+  background: linear-gradient(90deg, #9ed7cb, #ffd1a8);
+}
+
+.paceMeter span {
+  background: linear-gradient(90deg, #84b8ab, #ffffff 54%, #ffd1a8);
+  box-shadow: 0 0 18px rgba(255, 255, 255, 0.28);
+  transition: width 120ms linear;
+}
+
+.prompt {
+  width: min(920px, 100%);
+  min-height: 150px;
+  margin: auto auto clamp(76px, 12vh, 132px);
+  padding: clamp(18px, 3vw, 30px);
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  color: rgba(255, 255, 255, 0.4);
+  background: rgba(8, 12, 12, 0.2);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.22);
+  backdrop-filter: blur(7px);
+  font-size: clamp(1.45rem, 4vw, 2.55rem);
+  font-weight: 650;
+  line-height: 1.35;
+  letter-spacing: 0;
+}
+
+.prompt span {
+  border-radius: 4px;
+}
+
+.prompt .correct {
+  color: #ffffff;
+}
+
+.prompt .incorrect {
+  color: #ffb4aa;
+  background: rgba(196, 77, 66, 0.24);
+}
+
+.typingInput {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  min-height: 0;
+  resize: none;
+  padding: 0;
+  border: 0;
+  outline: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.typingInput:disabled {
+  opacity: 0;
+}
+
+.statusLine {
+  position: fixed;
+  right: clamp(14px, 3vw, 34px);
+  bottom: 36px;
+  margin: 0;
+}
+
+.quietBadge,
+.completeBadge {
+  display: inline-flex;
+  height: 36px;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.82);
+  font-weight: 750;
+}
+
+.completeBadge {
+  color: #ffd1a8;
+}
+
+.credit {
+  position: fixed;
+  left: 18px;
+  bottom: 12px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.72rem;
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.42);
+}
+
+@media (max-width: 680px) {
+  body {
+    overflow: auto;
+  }
+
+  .shell {
+    padding: 12px;
+  }
+
+  .topbar {
+    align-items: flex-start;
+  }
+
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .prompt {
+    min-height: 190px;
+    margin-bottom: 86px;
+  }
+}
