@@ -9,6 +9,10 @@ window.SpeedType.games.typing.createTypingView = function createTypingView(root)
   const rewardVideoSource = rewardVideo.querySelector("source");
   const videoFile = root.querySelector("[data-video-file]");
   const status = root.querySelector("[data-status]");
+  const soundButton = root.querySelector("#sound-button");
+  const soundOnIcon = root.querySelector("[data-sound-on]");
+  const soundOffIcon = root.querySelector("[data-sound-off]");
+  const volumeSlider = root.querySelector("[data-volume]");
   const resetButton = root.querySelector("#reset-button");
   const focusButton = root.querySelector("#focus-button");
   const stats = {
@@ -16,12 +20,15 @@ window.SpeedType.games.typing.createTypingView = function createTypingView(root)
     accuracy: root.querySelector('[data-stat="accuracy"]'),
     mistakes: root.querySelector('[data-stat="mistakes"]'),
     time: root.querySelector('[data-stat="time"]'),
+    tier: root.querySelector('[data-stat="tier"]'),
   };
 
   let currentState = null;
   let dispatchRef = null;
   let videoSources = [DEFAULT_VIDEO_URL];
   let activeVideoUrl = DEFAULT_VIDEO_URL;
+  let soundEnabled = true;
+  let volume = Number(volumeSlider.value);
 
   return {
     bind(dispatch) {
@@ -47,7 +54,10 @@ window.SpeedType.games.typing.createTypingView = function createTypingView(root)
 
         event.preventDefault();
         dispatch({ type: "round:next", timestamp: performance.now() });
-        window.setTimeout(() => input.focus(), 0);
+        window.setTimeout(() => {
+          input.focus();
+          input.setSelectionRange(input.value.length, input.value.length);
+        }, 0);
       });
       prompt.addEventListener("click", () => input.focus());
       rewardVideo.addEventListener("ended", () => {
@@ -67,6 +77,16 @@ window.SpeedType.games.typing.createTypingView = function createTypingView(root)
         syncRewardVideo(rewardVideo, currentState?.pace ?? 0, currentState?.status ?? "idle");
         videoFile.value = "";
       });
+      soundButton.addEventListener("click", () => {
+        soundEnabled = !soundEnabled;
+        applySoundPreference();
+        syncRewardVideo(rewardVideo, currentState?.pace ?? 100, currentState?.status ?? "running");
+      });
+      volumeSlider.addEventListener("input", () => {
+        volume = Number(volumeSlider.value);
+        soundEnabled = volume > 0;
+        applySoundPreference();
+      });
       resetButton.addEventListener("click", () => {
         dispatch({ type: "session:reset", timestamp: performance.now() });
         window.setTimeout(() => input.focus(), 0);
@@ -79,6 +99,7 @@ window.SpeedType.games.typing.createTypingView = function createTypingView(root)
       stats.accuracy.textContent = `${state.accuracy}%`;
       stats.mistakes.textContent = state.mistakes;
       stats.time.textContent = `${Math.max(0, Math.round(state.elapsedMs / 1000))}s`;
+      stats.tier.textContent = `${state.tier} ${state.targetCpm}`;
       input.value = state.input;
       input.disabled = false;
       progress.style.width = `${state.progress}%`;
@@ -98,6 +119,13 @@ window.SpeedType.games.typing.createTypingView = function createTypingView(root)
     }
   }
 
+  function applySoundPreference() {
+    rewardVideo.muted = !soundEnabled;
+    rewardVideo.volume = volume;
+    soundOnIcon.hidden = !soundEnabled;
+    soundOffIcon.hidden = soundEnabled;
+  }
+
   function chooseRandomVideo() {
     const nextUrl = pickRandomVideo(videoSources, activeVideoUrl);
 
@@ -109,6 +137,7 @@ window.SpeedType.games.typing.createTypingView = function createTypingView(root)
     activeVideoUrl = nextUrl;
     rewardVideo.loop = videoSources.length === 1;
     rewardVideoSource.src = nextUrl;
+    applySoundPreference();
     rewardVideo.load();
   }
 };

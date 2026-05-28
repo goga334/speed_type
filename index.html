@@ -8,7 +8,7 @@
   </head>
   <body>
     <div class="videoBackdrop" aria-hidden="true">
-      <video data-reward-video muted loop playsinline preload="metadata">
+      <video data-reward-video loop playsinline preload="metadata">
         <source
           src="https://commons.wikimedia.org/wiki/Special:Redirect/file/Flor_de_Suculenta.webm"
           type="video/webm"
@@ -31,6 +31,30 @@
                 <path d="M5 16v3h14v-3" />
               </svg>
             </label>
+            <div class="volumeControl">
+              <button class="iconButton" id="sound-button" type="button" aria-label="Toggle video sound">
+                <svg data-sound-on viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M4 9v6h4l5 4V5L8 9H4Z" />
+                  <path d="M17 9.5a4 4 0 0 1 0 5" />
+                  <path d="M19.5 7a8 8 0 0 1 0 10" />
+                </svg>
+                <svg data-sound-off viewBox="0 0 24 24" aria-hidden="true" hidden>
+                  <path d="M4 9v6h4l5 4V5L8 9H4Z" />
+                  <path d="m18 9 4 4" />
+                  <path d="m22 9-4 4" />
+                </svg>
+              </button>
+              <input
+                class="volumeSlider"
+                data-volume
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.8"
+                aria-label="Video volume"
+              />
+            </div>
             <button class="iconButton" id="reset-button" type="button" aria-label="Reset session">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M4 12a8 8 0 1 0 2.7-6" />
@@ -56,6 +80,10 @@
           <div class="stat">
             <span>Time</span>
             <strong data-stat="time">0s</strong>
+          </div>
+          <div class="stat">
+            <span>Tier</span>
+            <strong data-stat="tier">Warmup</strong>
           </div>
         </div>
 
